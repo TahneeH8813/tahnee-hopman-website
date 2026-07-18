@@ -1,0 +1,12 @@
+{
+  "name": "tahnee-hopman-editorial-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Static site with a Decap CMS-powered journal.",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
