@@ -190,7 +190,7 @@ function headerNav(depth, current) {
     `<a href="${p}${href}"${current === key ? ' aria-current="page"' : ""}>${label}</a>`;
   return `<header class="site-header">
   <div class="header-inner">
-    <a class="brand" href="${p}index.html"><span class="pilcrow">&#182;</span> Tahnee Hopman</a>
+    <a class="brand" href="${p}index.html"><span class="pilcrow">&#182;</span> The Editorial Layer</a>
     <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">Menu</button>
     <nav class="site-nav">
       ${link("index.html", "Home", "home")}
@@ -225,7 +225,7 @@ function postPage(post) {
 <html lang="en">
 <head>
 ${headBlock({
-    title: `${post.title} | Journal | Tahnee Hopman`,
+    title: `${post.title} | The Editorial Layer`,
     description: post.dek,
     canonical,
     depth,
@@ -274,7 +274,7 @@ function blogIndexPage(posts) {
 <html lang="en">
 <head>
 ${headBlock({
-    title: "Journal | Tahnee Hopman, Editor",
+    title: "Journal | The Editorial Layer",
     description:
       "Short, occasional essays on how editing actually works, from Tahnee Hopman.",
     canonical,
