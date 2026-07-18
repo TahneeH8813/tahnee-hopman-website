@@ -1,0 +1,431 @@
+/* ---------------------------------------------
+   Tahnee Hopman -- editorial site
+   Typography-led, no imagery required.
+--------------------------------------------- */
+
+:root {
+  --cream: #faf6ef;
+  --paper: #f3ede1;
+  --ink: #211d19;
+  --ink-soft: #4a433c;
+  --meta: #8a8177;
+  --rule: #ddd2bf;
+  --accent: #a8442c;
+  --accent-soft: #c97a5f;
+  --max: 720px;
+  --max-wide: 980px;
+  --serif: "Lora", Georgia, "Times New Roman", serif;
+  --sans: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 18px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+a:hover { color: var(--ink); }
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0 0 0.5em;
+  color: var(--ink);
+}
+
+h1 { font-size: 2.6rem; font-weight: 500; }
+h2 { font-size: 1.7rem; margin-top: 2.2em; }
+h3 { font-size: 1.25rem; margin-top: 1.6em; }
+
+p { margin: 0 0 1.2em; }
+
+.lead {
+  font-size: 1.25rem;
+  color: var(--ink-soft);
+  font-family: var(--serif);
+  line-height: 1.55;
+}
+
+.eyebrow {
+  display: block;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.9em;
+}
+
+.pilcrow {
+  color: var(--accent);
+  font-family: var(--serif);
+}
+
+/* ---------- layout ---------- */
+
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.wrap-wide {
+  max-width: var(--max-wide);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+main { display: block; }
+
+section { padding: 64px 0; }
+
+section.tight { padding: 40px 0; }
+
+.rule {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 0;
+}
+
+/* ---------- header ---------- */
+
+header.site-header {
+  border-bottom: 1px solid var(--rule);
+  background: var(--cream);
+  position: relative;
+  z-index: 10;
+}
+
+.header-inner {
+  max-width: var(--max-wide);
+  margin: 0 auto;
+  padding: 22px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+
+.brand:hover { color: var(--accent); }
+
+.brand .pilcrow { margin-right: 2px; }
+
+nav.site-nav {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+nav.site-nav a {
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+
+nav.site-nav a:hover,
+nav.site-nav a[aria-current="page"] { color: var(--accent); }
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+@media (max-width: 680px) {
+  nav.site-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--cream);
+    border-bottom: 1px solid var(--rule);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 24px 24px;
+    gap: 16px;
+    display: none;
+  }
+  nav.site-nav.open { display: flex; }
+  .nav-toggle { display: inline-block; }
+}
+
+/* ---------- hero ---------- */
+
+.hero {
+  padding: 72px 0 56px;
+}
+
+.hero h1 { margin-bottom: 0.35em; }
+
+.hero .lead { max-width: 620px; }
+
+.cta-row {
+  margin-top: 2em;
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 3px;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--ink);
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.btn-primary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--cream);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ---------- cards / grids ---------- */
+
+.pillar-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  margin-top: 2em;
+}
+
+@media (max-width: 680px) {
+  .pillar-grid { grid-template-columns: 1fr; }
+}
+
+.pillar {
+  border-top: 2px solid var(--accent);
+  padding-top: 16px;
+}
+
+.pillar h3 { margin-top: 0; font-size: 1.15rem; }
+
+.pillar p { color: var(--ink-soft); font-size: 0.98rem; margin-bottom: 0.6em; }
+
+.pillar a { font-size: 0.9rem; font-weight: 600; text-decoration: none; }
+
+/* ---------- work list ---------- */
+
+.work-item {
+  padding: 28px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.work-item:first-of-type { padding-top: 0; }
+
+.work-item h3 {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+  font-size: 1.2rem;
+}
+
+.work-meta {
+  font-size: 0.85rem;
+  color: var(--meta);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.6em;
+}
+
+.work-item p { margin-bottom: 0; color: var(--ink-soft); }
+
+/* ---------- journal / posts ---------- */
+
+.post-item {
+  padding: 26px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.post-item:first-of-type { padding-top: 0; }
+
+.post-item h3 { margin: 0 0 0.3em; font-size: 1.25rem; }
+
+.post-item h3 a { text-decoration: none; color: var(--ink); }
+
+.post-item h3 a:hover { color: var(--accent); }
+
+.post-date {
+  font-size: 0.82rem;
+  color: var(--meta);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.5em;
+}
+
+.post-dek { color: var(--ink-soft); margin-bottom: 0; }
+
+article.post h1 { font-size: 2.1rem; }
+
+article.post .post-date { margin-bottom: 1.6em; }
+
+article.post p { font-family: var(--serif); font-size: 1.08rem; }
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5em;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+/* ---------- lists inside content ---------- */
+
+.service-list {
+  margin: 0 0 1.4em;
+  padding-left: 1.2em;
+}
+
+.service-list li {
+  margin-bottom: 0.5em;
+  color: var(--ink-soft);
+}
+
+/* ---------- quote ---------- */
+
+blockquote {
+  margin: 2em 0;
+  padding-left: 1.2em;
+  border-left: 3px solid var(--accent);
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 1.15rem;
+}
+
+/* ---------- contact form ---------- */
+
+.contact-form {
+  margin-top: 2em;
+  max-width: 480px;
+}
+
+.contact-form label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--ink-soft);
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 18px;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--paper);
+  font-family: var(--sans);
+  font-size: 0.98rem;
+  color: var(--ink);
+}
+
+.contact-form textarea { min-height: 130px; resize: vertical; }
+
+.contact-form button { cursor: pointer; }
+
+.hp-field { position: absolute; left: -9999px; }
+
+/* ---------- footer ---------- */
+
+footer.site-footer {
+  border-top: 1px solid var(--rule);
+  margin-top: 40px;
+  padding: 40px 0 56px;
+  background: var(--paper);
+}
+
+.footer-inner {
+  max-width: var(--max-wide);
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.footer-inner a { color: var(--ink-soft); }
+.footer-inner a:hover { color: var(--accent); }
+
+.footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+
+/* ---------- misc ---------- */
+
+.muted { color: var(--meta); }
+
+@media (max-width: 480px) {
+  body { font-size: 17px; }
+  h1 { font-size: 2.1rem; }
+  .hero { padding: 48px 0 40px; }
+}
+
+/* ---------- markdown content inside journal posts ---------- */
+
+article.post ul,
+article.post ol {
+  font-family: var(--serif);
+  font-size: 1.08rem;
+  color: var(--ink);
+  margin: 0 0 1.2em;
+  padding-left: 1.4em;
+}
+
+article.post li {
+  margin-bottom: 0.4em;
+}
+
+article.post blockquote p {
+  margin-bottom: 0;
+}
