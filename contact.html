@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact | Tahnee Hopman, Editor</title>
+<meta name="description" content="Get in touch with Tahnee Hopman about editorial strategy, structural editing, copyediting, style guides or publication production.">
+<link rel="canonical" href="https://tahneehopman.com/contact.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Contact | Tahnee Hopman, Editor">
+<meta property="og:description" content="Get in touch with Tahnee Hopman about editorial strategy, structural editing, copyediting, style guides or publication production.">
+<meta property="og:url" content="https://tahneehopman.com/contact.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html"><span class="pilcrow">&#182;</span> Tahnee Hopman</a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">Menu</button>
+    <nav class="site-nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="how-i-work.html">How I Work</a>
+      <a href="selected-work.html">Selected Work</a>
+      <a href="blog/index.html">Journal</a>
+      <a href="contact.html" aria-current="page">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">Contact</span>
+      <h1>Get in touch</h1>
+      <p class="lead">If you've got a document that needs an editor, a publication that needs direction, or you're not yet sure which one describes your problem, email me and we'll figure it out from there.</p>
+
+      <p>
+        <a href="mailto:tahnee.hopman@gmail.com">tahnee.hopman@gmail.com</a><br>
+        <a href="https://www.linkedin.com/in/tahneehopman/">linkedin.com/in/tahneehopman</a><br>
+        Melbourne, Australia
+      </p>
+
+      <form class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="contact">
+        <p class="hp-field"><label>Don't fill this in: <input name="bot-field"></label></p>
+
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="message">What are you working on?</label>
+        <textarea id="message" name="message" required></textarea>
+
+        <button class="btn btn-primary" type="submit">Send</button>
+      </form>
+      <p class="muted" style="margin-top: 1em; font-size: 0.85rem;">This form works automatically if the site is hosted on Netlify. See the README for details.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>Tahnee Hopman &middot; Melbourne, Australia</div>
+    <div class="footer-links">
+      <a href="mailto:tahnee.hopman@gmail.com">tahnee.hopman@gmail.com</a>
+      <a href="https://www.linkedin.com/in/tahneehopman/">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
