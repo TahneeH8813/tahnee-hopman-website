@@ -3,17 +3,17 @@
   "hero_eyebrow": "Tahnee Hopman, Editor",
   "hero_heading": "The Editorial Layer",
   "hero_lead": "I edit the writing that has to hold up: board reports, investor analysis, expert publications, and the magazines and campaigns that carry an organisation's name. Eighteen years in, and I still can't walk past a misplaced hyphen. That's maybe half the job. The other half is knowing which four hundred words of a chief executive's three thousand actually make an argument, and having the nerve to cut the rest.",
-  "hero_image": "",
+  "hero_image": "/blog/content/images/banner-home.svg",
   "cta_primary_label": "See how I work",
   "cta_secondary_label": "Get in touch",
   "intro_heading": "Two kinds of editing, one set of instincts",
   "intro_body": "Most of my career has run on two tracks that turn out to be the same skill. One is leading editorial strategy for organisations that need their content to sound like them, consistently, across a magazine, a website, a podcast and a stakeholder who wants everything in by Friday. The other is quieter and more forensic: editing technical and analytical reports for readers who will notice if a number in the executive summary doesn't match the number in table four. Both come down to the same question: does this actually say what you meant it to say, to the people who are going to read it closely?\n\nI've spent the past few years doing both at once, and I've stopped thinking of them as separate disciplines. They're the same editorial instinct, just working at different distances from the page.",
   "practice_heading": "What that looks like in practice",
   "pillars": [
-    { "heading": "Strategy & direction", "body": "Setting the editorial rationale for a publication or content program, planning in cycles that match how a business actually operates, and building the team of contributors who deliver it.", "anchor": "how-i-work.html#strategy" },
-    { "heading": "Structure & substance", "body": "Turning scattered, high-conviction thinking into an argument that holds together, and finding the point a writer has already made but buried in paragraph four.", "anchor": "how-i-work.html#structure" },
-    { "heading": "Clarity, consistency & style", "body": "Line-level editing that keeps a writer's voice, plus the document-wide checks that catch a number, date or acronym that doesn't match itself.", "anchor": "how-i-work.html#clarity" },
-    { "heading": "Production & proof", "body": "Staying involved through layout and final proof, where restraint matters as much as attention, and an unnecessary late change is the most dangerous kind.", "anchor": "how-i-work.html#production" }
+    { "heading": "Strategy & direction", "body": "Setting the editorial rationale for a publication, then planning it in cycles that match how the business runs — budget season, results season — not a borrowed news calendar." },
+    { "heading": "Structure & substance", "body": "Turning scattered, high-conviction thinking into an argument that holds together, and giving the point a writer already made — usually buried in paragraph four — the position it deserves." },
+    { "heading": "Clarity, consistency & style", "body": "Line-level editing that keeps a writer's voice, plus the checks that catch what readers never notice unless it's wrong: a number, date or acronym out of step with itself." },
+    { "heading": "Production & proof", "body": "Staying involved through layout and final proof, in InDesign if needed, where restraint matters as much as attention and an unnecessary late change is the riskiest kind." }
   ],
   "selected_work_heading": "Selected work",
   "selected_work_intro": "A short version. The longer one is [here](selected-work.html).",
