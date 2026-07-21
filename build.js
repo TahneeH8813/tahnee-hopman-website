@@ -268,7 +268,6 @@ function pillarsHtml(pillars) {
       (p) => `        <div class="pillar">
           <h3>${inline(p.heading)}</h3>
           <p>${inline(p.body)}</p>
-          <a href="${p.anchor}">Read more &rarr;</a>
         </div>`
     )
     .join("\n");
@@ -356,7 +355,7 @@ ${headerNav(0, "home", navItems)}
       <h1>${inline(data.hero_heading)}</h1>
       <p class="lead">${inline(data.hero_lead)}</p>${heroImage(data.hero_image)}
       <div class="cta-row">
-        <a class="btn btn-primary" href="how-i-work.html">${inline(data.cta_primary_label)}</a>
+        <a class="btn btn-primary" href="#practice">${inline(data.cta_primary_label)}</a>
         <a class="btn btn-secondary" href="contact.html">${inline(data.cta_secondary_label)}</a>
       </div>
     </div>
@@ -371,7 +370,7 @@ ${mdToHtml(data.intro_body)}
     </div>
   </section>
 
-  <section>
+  <section id="practice">
     <div class="wrap-wide">
       <h2>${inline(data.practice_heading)}</h2>
       <div class="pillar-grid">
