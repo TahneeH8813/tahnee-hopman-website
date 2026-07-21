@@ -1,0 +1,60 @@
+{
+  "published": true,
+  "meta_description": "Editorial strategy, structural and analytical editing, copyediting and style guides, and production and proofing. What each involves and how I decide what to change.",
+  "hero_eyebrow": "How I Work",
+  "hero_heading": "Every edit should earn its place",
+  "hero_lead": "Before I change anything, I'm asking one of three questions: is this necessary, because something is wrong. Is this worth it, because something would genuinely work better. Or is this just a preference, another perfectly good way to write the same sentence. I mostly leave the third category alone. Not every editor does, and I think that's the difference between an edit that helps and one that just proves someone was paid to make changes.",
+  "hero_image": "",
+  "sections": [
+    {
+      "id": "strategy",
+      "heading": "Strategy & direction",
+      "body": "Before anyone writes a word, someone has to decide what a publication or content program is actually for, who it serves, and why it should exist in its current form. I've taken a magazine through a full strategic reset: length, frequency, tone, and the editorial rationale that has to justify every commission. I plan in cycles that match how a business actually operates, budget season, results season, planning season, rather than chasing a news calendar that doesn't belong to the organisation.",
+      "items": [
+        "Editorial strategy and repositioning",
+        "Quarterly and long-range content planning",
+        "Commissioning and managing a bench of writers and contributors",
+        "Interview design and executive access, including chief executive and board-level interviews",
+        "Budget management and stakeholder communication"
+      ]
+    },
+    {
+      "id": "structure",
+      "heading": "Structure & substance",
+      "body": "This is where most of the value in editing actually lives, and where most people don't think to look. I take pages of scattered, high-conviction thinking, often from someone senior with strong instincts and no time for the mechanics of argument, and find the version that's both accurate and worth reading. I look for the point a writer has already made but buried in paragraph four, and give it the position it deserves.",
+      "items": [
+        "Substantive and structural editing",
+        "Ghostwriting for senior leaders and subject-matter experts",
+        "Analytical editing: checking that a document's conclusions are as strong as its evidence",
+        "Identifying where an argument is more definitive, or less, than the evidence actually supports"
+      ]
+    },
+    {
+      "id": "clarity",
+      "heading": "Clarity, consistency & style",
+      "body": "At sentence level, I edit for clarity, rhythm and precision without stripping out the voice that made something worth reading in the first place. At document level, I check the things readers never notice unless they're wrong: whether the number in the executive summary matches the number in table four, whether an acronym is defined on first use, whether 270 km and 270 kilometres are both sitting in the same report. I build style guides from how an organisation actually publishes, not from a theoretical document nobody consults.",
+      "items": [
+        "Copyediting and readability",
+        "House style application and development",
+        "Technical and specialist editing: I query rather than rewrite when I'm out of my depth",
+        "Style guide development and gap analysis",
+        "Cross-document consistency checks: numbers, dates, terminology, units, acronyms"
+      ]
+    },
+    {
+      "id": "production",
+      "heading": "Production & proof",
+      "body": "I stay involved once a story moves into layout. I can go into InDesign myself to reflow copy and fix a page that's already been signed off, under deadline, when a contributor's final draft lands late. At final proof, restraint matters as much as attention. The closer a document gets to publication, the more dangerous an unnecessary change becomes.",
+      "items": [
+        "Proofreading and production management",
+        "InDesign work and design collaboration",
+        "Print production and handoff",
+        "Final-stage quality control",
+        "Cross-format adaptation, print to digital"
+      ]
+    }
+  ],
+  "closing_heading": "Not sure which of this you need?",
+  "closing_body": "That's a completely normal place to start. Tell me what the document or publication is meant to do, and we'll work out the rest from there.",
+  "closing_cta_label": "Get in touch"
+}
