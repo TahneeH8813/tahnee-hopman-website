@@ -191,6 +191,12 @@ nav.site-nav a[aria-current="page"] { color: var(--accent); }
 
 .hero .lead { max-width: 620px; }
 
+.hero-image {
+  margin-top: 1.5em;
+  border-radius: 4px;
+  max-width: 620px;
+}
+
 .cta-row {
   margin-top: 2em;
   display: flex;
