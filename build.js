@@ -1,12 +1,22 @@
 /*
-  Build script for the journal.
+  Build script for the whole site.
 
-  Reads markdown posts from blog/content/posts/*.md (written by the
-  /admin CMS, or by hand), and generates:
-    - blog/posts/<slug>.html   (one page per post)
+  Reads:
+    - content/pages/*.json   (Home, About, How I Work, Selected Work,
+      Contact -- edited via /admin, the Decap CMS panel)
+    - blog/content/posts/*.md  (Journal posts, written by /admin or by hand)
+
+  And generates:
+    - index.html, about.html, how-i-work.html, selected-work.html,
+      contact.html
+    - blog/posts/<slug>.html   (one page per journal post)
     - blog/index.html          (the journal list)
-    - the "From the journal" section on the home page (index.html)
     - sitemap.xml
+
+  A page's "published" flag controls whether its HTML file is written
+  at all, and whether it appears in the navigation, so unchecking
+  "Show this page" in the CMS effectively removes that page from the
+  site on the next deploy.
 
   No npm dependencies on purpose, so there is nothing to install and
   nothing that can go out of date. Runs with plain Node.
@@ -16,17 +26,24 @@ const fs = require("fs");
 const path = require("path");
 
 const ROOT = __dirname;
+const PAGES_DIR = path.join(ROOT, "content", "pages");
 const POSTS_SRC_DIR = path.join(ROOT, "blog", "content", "posts");
 const POSTS_OUT_DIR = path.join(ROOT, "blog", "posts");
 const BLOG_INDEX_PATH = path.join(ROOT, "blog", "index.html");
 const HOME_PATH = path.join(ROOT, "index.html");
+const ABOUT_PATH = path.join(ROOT, "about.html");
+const HOW_PATH = path.join(ROOT, "how-i-work.html");
+const WORK_PATH = path.join(ROOT, "selected-work.html");
+const CONTACT_PATH = path.join(ROOT, "contact.html");
 const SITEMAP_PATH = path.join(ROOT, "sitemap.xml");
 
 const SITE_URL = "https://tahneehopman.com";
 
-/* ---------------- tiny frontmatter parser ---------------- */
-// Handles the simple flat fields Decap CMS writes for this collection
-// (title, date, dek), plus a markdown body. Not a general YAML parser.
+/* ---------------- tiny frontmatter parser (blog posts) ---------------- */
+// Handles the simple flat fields Decap CMS writes for the posts
+// collection (title, date, dek), plus a markdown body. Not a general
+// YAML parser -- the site pages below use plain JSON instead, which
+// needs no custom parsing at all.
 
 function parsePost(raw) {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
@@ -51,7 +68,7 @@ function parsePost(raw) {
 
 /* ---------------- tiny markdown -> html ---------------- */
 // Covers what the CMS's rich-text editor produces: paragraphs, headings,
-// bold/italic, links, blockquotes, bulleted and numbered lists.
+// bold/italic, links, images, blockquotes, bulleted and numbered lists.
 
 function escapeHtml(s) {
   return s
@@ -61,7 +78,8 @@ function escapeHtml(s) {
 }
 
 function inline(md) {
-  let s = escapeHtml(md);
+  let s = escapeHtml(md || "");
+  s = s.replace(/!\[(.*?)\]\((.+?)\)/g, '<img src="$2" alt="$1" loading="lazy">');
   s = s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
   s = s.replace(/(^|[^*])\*(?!\*)(.+?)\*(?!\*)/g, "$1<em>$2</em>");
   s = s.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>');
@@ -69,7 +87,7 @@ function inline(md) {
 }
 
 function mdToHtml(md) {
-  const blocks = md.replace(/\r\n/g, "\n").split(/\n\s*\n/);
+  const blocks = (md || "").replace(/\r\n/g, "\n").split(/\n\s*\n/);
   const html = blocks
     .map((block) => {
       const trimmed = block.trim();
@@ -129,7 +147,18 @@ function formatDate(d) {
   });
 }
 
-/* ---------------- read posts ---------------- */
+/* ---------------- read content ---------------- */
+
+function readPageJson(name, defaults) {
+  const file = path.join(PAGES_DIR, `${name}.json`);
+  if (!fs.existsSync(file)) return defaults;
+  try {
+    return Object.assign({}, defaults, JSON.parse(fs.readFileSync(file, "utf8")));
+  } catch (err) {
+    console.warn(`Could not parse content/pages/${name}.json, using defaults:`, err.message);
+    return defaults;
+  }
+}
 
 function readPosts() {
   if (!fs.existsSync(POSTS_SRC_DIR)) return [];
@@ -164,7 +193,19 @@ function readPosts() {
   return posts;
 }
 
-/* ---------------- templates ---------------- */
+/* ---------------- navigation ---------------- */
+
+function getNavItems(pages) {
+  const items = [{ href: "index.html", label: "Home", key: "home" }];
+  if (pages.about.published !== false) items.push({ href: "about.html", label: "About", key: "about" });
+  if (pages.howIWork.published !== false) items.push({ href: "how-i-work.html", label: "How I Work", key: "how" });
+  if (pages.selectedWork.published !== false) items.push({ href: "selected-work.html", label: "Selected Work", key: "work" });
+  items.push({ href: "blog/index.html", label: "Journal", key: "journal" });
+  if (pages.contact.published !== false) items.push({ href: "contact.html", label: "Contact", key: "contact" });
+  return items;
+}
+
+/* ---------------- shared templates ---------------- */
 
 function headBlock({ title, description, canonical, depth, type }) {
   const p = "../".repeat(depth);
@@ -184,21 +225,20 @@ function headBlock({ title, description, canonical, depth, type }) {
 <link rel="stylesheet" href="${p}css/style.css">`;
 }
 
-function headerNav(depth, current) {
+function headerNav(depth, current, navItems) {
   const p = "../".repeat(depth);
-  const link = (href, label, key) =>
-    `<a href="${p}${href}"${current === key ? ' aria-current="page"' : ""}>${label}</a>`;
+  const links = navItems
+    .map(
+      (item) =>
+        `<a href="${p}${item.href}"${current === item.key ? ' aria-current="page"' : ""}>${item.label}</a>`
+    )
+    .join("\n      ");
   return `<header class="site-header">
   <div class="header-inner">
     <a class="brand" href="${p}index.html"><span class="pilcrow">&#182;</span> The Editorial Layer</a>
     <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">Menu</button>
     <nav class="site-nav">
-      ${link("index.html", "Home", "home")}
-      ${link("about.html", "About", "about")}
-      ${link("how-i-work.html", "How I Work", "how")}
-      ${link("selected-work.html", "Selected Work", "work")}
-      ${link("blog/index.html", "Journal", "journal")}
-      ${link("contact.html", "Contact", "contact")}
+      ${links}
     </nav>
   </div>
 </header>`;
@@ -218,7 +258,360 @@ function footer(depth) {
 <script src="${p}js/main.js"></script>`;
 }
 
-function postPage(post) {
+function heroImage(image) {
+  return image ? `\n      <img class="hero-image" src="${image}" alt="" loading="lazy">` : "";
+}
+
+function pillarsHtml(pillars) {
+  return (pillars || [])
+    .map(
+      (p) => `        <div class="pillar">
+          <h3>${inline(p.heading)}</h3>
+          <p>${inline(p.body)}</p>
+          <a href="${p.anchor}">Read more &rarr;</a>
+        </div>`
+    )
+    .join("\n");
+}
+
+function workItemsHtml(items) {
+  return (items || [])
+    .map(
+      (item) => `      <div class="work-item">
+        <div class="work-meta">${inline(item.meta)}</div>
+        <h3>${inline(item.title)}</h3>
+        <p>${inline(item.body)}</p>
+      </div>`
+    )
+    .join("\n");
+}
+
+function howIWorkSectionsHtml(sections) {
+  return (sections || [])
+    .map(
+      (s) => `  <section id="${s.id}">
+    <div class="wrap">
+      <h2>${inline(s.heading)}</h2>
+      <p>${inline(s.body)}</p>
+      <ul class="service-list">
+${(s.items || []).map((i) => `        <li>${inline(i)}</li>`).join("\n")}
+      </ul>
+    </div>
+  </section>`
+    )
+    .join("\n\n");
+}
+
+function latestPostsSnippet(posts) {
+  const latest = posts.slice(0, 3);
+  if (!latest.length) {
+    return `      <p class="muted">Nothing published here yet. First post is on its way. In the meantime, feel free to <a href="blog/index.html">visit the journal</a>.</p>`;
+  }
+  return latest
+    .map(
+      (post) => `      <div class="post-item">
+        <h3><a href="blog/posts/${post.slug}.html">${post.title}</a></h3>
+        <p class="post-dek">${post.dek}</p>
+      </div>`
+    )
+    .join("\n");
+}
+
+/* ---------------- pages ---------------- */
+
+function homePage(data, posts, navItems) {
+  const canonical = `${SITE_URL}/`;
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+${headBlock({
+    title: `${data.hero_heading} | ${data.hero_eyebrow}`,
+    description: data.meta_description,
+    canonical,
+    depth: 0,
+  })}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Tahnee Hopman",
+  "jobTitle": "Editor",
+  "url": "${SITE_URL}/",
+  "email": "mailto:tahnee.hopman@gmail.com",
+  "sameAs": ["https://www.linkedin.com/in/tahneehopman/"],
+  "address": { "@type": "PostalAddress", "addressLocality": "Melbourne", "addressCountry": "AU" },
+  "description": "Editor specialising in editorial strategy, structural and analytical editing, copyediting, style guides and publication production."
+}
+</script>
+</head>
+<body>
+
+${headerNav(0, "home", navItems)}
+
+<main>
+
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">${inline(data.hero_eyebrow)}</span>
+      <h1>${inline(data.hero_heading)}</h1>
+      <p class="lead">${inline(data.hero_lead)}</p>${heroImage(data.hero_image)}
+      <div class="cta-row">
+        <a class="btn btn-primary" href="how-i-work.html">${inline(data.cta_primary_label)}</a>
+        <a class="btn btn-secondary" href="contact.html">${inline(data.cta_secondary_label)}</a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <div class="wrap">
+      <h2>${inline(data.intro_heading)}</h2>
+${mdToHtml(data.intro_body)}
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap-wide">
+      <h2>${inline(data.practice_heading)}</h2>
+      <div class="pillar-grid">
+${pillarsHtml(data.pillars)}
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <div class="wrap">
+      <h2>${inline(data.selected_work_heading)}</h2>
+      <p class="muted">${inline(data.selected_work_intro)}</p>
+${workItemsHtml(data.selected_work_items)}
+    </div>
+  </section>
+
+  <section class="tight">
+    <div class="wrap">
+      <h2>From the journal</h2>
+${latestPostsSnippet(posts)}
+      <p><a href="blog/index.html">Visit the journal &rarr;</a></p>
+    </div>
+  </section>
+
+</main>
+
+${footer(0)}
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", function (user) {
+      if (!user) {
+        window.netlifyIdentity.on("login", function () {
+          document.location.href = "/admin/";
+        });
+      }
+    });
+  }
+</script>
+</body>
+</html>
+`;
+}
+
+function aboutPage(data, navItems) {
+  const canonical = `${SITE_URL}/about.html`;
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+${headBlock({
+    title: `${data.hero_eyebrow} | The Editorial Layer`,
+    description: data.meta_description,
+    canonical,
+    depth: 0,
+    type: "article",
+  })}
+</head>
+<body>
+
+${headerNav(0, "about", navItems)}
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">${inline(data.hero_eyebrow)}</span>
+      <h1>${inline(data.hero_heading)}</h1>
+
+      <p class="lead">${inline(data.hero_lead)}</p>${heroImage(data.hero_image)}
+
+${mdToHtml(data.body)}
+
+      <h2>${inline(data.credentials_heading)}</h2>
+      <p class="muted">${inline(data.credentials_text)}</p>
+    </div>
+  </section>
+</main>
+
+${footer(0)}
+</body>
+</html>
+`;
+}
+
+function howIWorkPage(data, navItems) {
+  const canonical = `${SITE_URL}/how-i-work.html`;
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+${headBlock({
+    title: `${data.hero_eyebrow} | The Editorial Layer`,
+    description: data.meta_description,
+    canonical,
+    depth: 0,
+    type: "article",
+  })}
+</head>
+<body>
+
+${headerNav(0, "how", navItems)}
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">${inline(data.hero_eyebrow)}</span>
+      <h1>${inline(data.hero_heading)}</h1>
+      <p class="lead">${inline(data.hero_lead)}</p>${heroImage(data.hero_image)}
+    </div>
+  </section>
+
+  <hr class="rule">
+
+${howIWorkSectionsHtml(data.sections)}
+
+  <hr class="rule">
+
+  <section class="tight">
+    <div class="wrap">
+      <h2>${inline(data.closing_heading)}</h2>
+      <p>${inline(data.closing_body)}</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="contact.html">${inline(data.closing_cta_label)}</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+${footer(0)}
+</body>
+</html>
+`;
+}
+
+function selectedWorkPage(data, navItems) {
+  const canonical = `${SITE_URL}/selected-work.html`;
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+${headBlock({
+    title: `${data.hero_eyebrow} | The Editorial Layer`,
+    description: data.meta_description,
+    canonical,
+    depth: 0,
+    type: "article",
+  })}
+</head>
+<body>
+
+${headerNav(0, "work", navItems)}
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">${inline(data.hero_eyebrow)}</span>
+      <h1>${inline(data.hero_heading)}</h1>
+      <p class="lead">${inline(data.hero_lead)}</p>${heroImage(data.hero_image)}
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <div class="wrap">
+
+${workItemsHtml(data.items)}
+
+    </div>
+  </section>
+
+  <section class="tight">
+    <div class="wrap">
+      <p>${inline(data.closing_text)}</p>
+    </div>
+  </section>
+</main>
+
+${footer(0)}
+</body>
+</html>
+`;
+}
+
+function contactPage(data, navItems) {
+  const canonical = `${SITE_URL}/contact.html`;
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+${headBlock({
+    title: `${data.hero_eyebrow} | The Editorial Layer`,
+    description: data.meta_description,
+    canonical,
+    depth: 0,
+    type: "article",
+  })}
+</head>
+<body>
+
+${headerNav(0, "contact", navItems)}
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">${inline(data.hero_eyebrow)}</span>
+      <h1>${inline(data.hero_heading)}</h1>
+      <p class="lead">${inline(data.hero_lead)}</p>${heroImage(data.hero_image)}
+
+      <p>
+        <a href="mailto:${data.email}">${data.email}</a><br>
+        <a href="${data.linkedin_url}">${inline(data.linkedin_label)}</a><br>
+        ${inline(data.location)}
+      </p>
+
+      <form class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="contact">
+        <p class="hp-field"><label>Don't fill this in: <input name="bot-field"></label></p>
+
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="message">What are you working on?</label>
+        <textarea id="message" name="message" required></textarea>
+
+        <button class="btn btn-primary" type="submit">Send</button>
+      </form>
+      <p class="muted" style="margin-top: 1em; font-size: 0.85rem;">This form works automatically if the site is hosted on Netlify. See the README for details.</p>
+    </div>
+  </section>
+</main>
+
+${footer(0)}
+</body>
+</html>
+`;
+}
+
+function postPage(post, navItems) {
   const depth = 2;
   const canonical = `${SITE_URL}/blog/posts/${post.slug}.html`;
   return `<!DOCTYPE html>
@@ -234,7 +627,7 @@ ${headBlock({
 </head>
 <body>
 
-${headerNav(depth, "journal")}
+${headerNav(depth, "journal", navItems)}
 
 <main>
   <section class="hero">
@@ -255,7 +648,7 @@ ${footer(depth)}
 `;
 }
 
-function blogIndexPage(posts) {
+function blogIndexPage(posts, navItems) {
   const depth = 1;
   const canonical = `${SITE_URL}/blog/index.html`;
   const list = posts.length
@@ -283,7 +676,7 @@ ${headBlock({
 </head>
 <body>
 
-${headerNav(depth, "journal")}
+${headerNav(depth, "journal", navItems)}
 
 <main>
   <section class="hero">
@@ -309,44 +702,15 @@ ${footer(depth)}
 `;
 }
 
-function latestPostsSnippet(posts) {
-  const latest = posts.slice(0, 3);
-  if (!latest.length) {
-    return `      <p class="muted">Nothing published here yet. First post is on its way. In the meantime, feel free to <a href="blog/index.html">visit the journal</a>.</p>`;
-  }
-  return latest
-    .map(
-      (post) => `      <div class="post-item">
-        <h3><a href="blog/posts/${post.slug}.html">${post.title}</a></h3>
-        <p class="post-dek">${post.dek}</p>
-      </div>`
-    )
-    .join("\n");
-}
+/* ---------------- sitemap ---------------- */
 
-function updateHomePage(posts) {
-  if (!fs.existsSync(HOME_PATH)) return;
-  let html = fs.readFileSync(HOME_PATH, "utf8");
-  const startMarker = "<!-- LATEST_POSTS:START -->";
-  const endMarker = "<!-- LATEST_POSTS:END -->";
-  const start = html.indexOf(startMarker);
-  const end = html.indexOf(endMarker);
-  if (start === -1 || end === -1) return;
-  const before = html.slice(0, start + startMarker.length);
-  const after = html.slice(end);
-  html = `${before}\n${latestPostsSnippet(posts)}\n${after}`;
-  fs.writeFileSync(HOME_PATH, html);
-}
-
-function updateSitemap(posts) {
-  const staticUrls = [
-    "/",
-    "/about.html",
-    "/how-i-work.html",
-    "/selected-work.html",
-    "/blog/index.html",
-    "/contact.html",
-  ];
+function updateSitemap(posts, pages) {
+  const staticUrls = ["/"];
+  if (pages.about.published !== false) staticUrls.push("/about.html");
+  if (pages.howIWork.published !== false) staticUrls.push("/how-i-work.html");
+  if (pages.selectedWork.published !== false) staticUrls.push("/selected-work.html");
+  staticUrls.push("/blog/index.html");
+  if (pages.contact.published !== false) staticUrls.push("/contact.html");
   const postUrls = posts.map((p) => `/blog/posts/${p.slug}.html`);
   const urls = staticUrls.concat(postUrls);
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -374,19 +738,59 @@ function clearOutputDir() {
   }
 }
 
+function removeIfExists(filePath) {
+  try {
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+  } catch (err) {
+    console.warn(`Could not remove ${filePath}, continuing:`, err.message);
+  }
+}
+
 function main() {
+  const pages = {
+    home: readPageJson("home", {}),
+    about: readPageJson("about", { published: true }),
+    howIWork: readPageJson("how-i-work", { published: true }),
+    selectedWork: readPageJson("selected-work", { published: true }),
+    contact: readPageJson("contact", { published: true }),
+  };
+  const navItems = getNavItems(pages);
+
   const posts = readPosts();
   clearOutputDir();
   posts.forEach((post) => {
-    fs.writeFileSync(
-      path.join(POSTS_OUT_DIR, `${post.slug}.html`),
-      postPage(post)
-    );
+    fs.writeFileSync(path.join(POSTS_OUT_DIR, `${post.slug}.html`), postPage(post, navItems));
   });
-  fs.writeFileSync(BLOG_INDEX_PATH, blogIndexPage(posts));
-  updateHomePage(posts);
-  updateSitemap(posts);
-  console.log(`Built ${posts.length} journal post(s).`);
+  fs.writeFileSync(BLOG_INDEX_PATH, blogIndexPage(posts, navItems));
+
+  fs.writeFileSync(HOME_PATH, homePage(pages.home, posts, navItems));
+
+  if (pages.about.published !== false) {
+    fs.writeFileSync(ABOUT_PATH, aboutPage(pages.about, navItems));
+  } else {
+    removeIfExists(ABOUT_PATH);
+  }
+
+  if (pages.howIWork.published !== false) {
+    fs.writeFileSync(HOW_PATH, howIWorkPage(pages.howIWork, navItems));
+  } else {
+    removeIfExists(HOW_PATH);
+  }
+
+  if (pages.selectedWork.published !== false) {
+    fs.writeFileSync(WORK_PATH, selectedWorkPage(pages.selectedWork, navItems));
+  } else {
+    removeIfExists(WORK_PATH);
+  }
+
+  if (pages.contact.published !== false) {
+    fs.writeFileSync(CONTACT_PATH, contactPage(pages.contact, navItems));
+  } else {
+    removeIfExists(CONTACT_PATH);
+  }
+
+  updateSitemap(posts, pages);
+  console.log(`Built ${posts.length} journal post(s) and ${Object.keys(pages).length} site pages.`);
 }
 
 main();
