@@ -19,4 +19,108 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Publish date", name: "date", widget: "datetime", format: "YYYY-MM-DDTHH:mm:ss.SSS[Z]", picker_utc: true }
       - { label: "Short description (shown in the journal list)", name: "dek", widget: "string", required: false, hint: "One sentence. If left blank, the start of the post is used instead." }
-      - { label: "Body", name: "body", widget: "markdown", buttons: ["bold", "italic", "link", "heading-two", "heading-three", "quote", "bulleted-list", "numbered-list"], modes: ["rich_text"] }
+      - { label: "Body", name: "body", widget: "markdown", buttons: ["bold", "italic", "link", "heading-two", "heading-three", "quote", "bulleted-list", "numbered-list", "image"], modes: ["rich_text"] }
+
+  - name: "pages"
+    label: "Site pages"
+    files:
+      - name: "home"
+        label: "Home"
+        file: "content/pages/home.json"
+        fields:
+          - { label: "Meta description (for search engines)", name: "meta_description", widget: "text" }
+          - { label: "Eyebrow (small text above the heading)", name: "hero_eyebrow", widget: "string" }
+          - { label: "Heading", name: "hero_heading", widget: "string" }
+          - { label: "Intro paragraph", name: "hero_lead", widget: "text" }
+          - { label: "Hero image (optional)", name: "hero_image", widget: "image", required: false }
+          - { label: "Primary button label", name: "cta_primary_label", widget: "string" }
+          - { label: "Secondary button label", name: "cta_secondary_label", widget: "string" }
+          - { label: "Second section heading", name: "intro_heading", widget: "string" }
+          - { label: "Second section body", name: "intro_body", widget: "markdown", buttons: ["bold", "italic", "link"], modes: ["rich_text"] }
+          - { label: "\"What that looks like in practice\" heading", name: "practice_heading", widget: "string" }
+          - label: "The four pillars"
+            name: "pillars"
+            widget: "list"
+            fields:
+              - { label: "Heading", name: "heading", widget: "string" }
+              - { label: "Body", name: "body", widget: "text" }
+              - { label: "Link (e.g. how-i-work.html#strategy)", name: "anchor", widget: "string" }
+          - { label: "Selected work heading", name: "selected_work_heading", widget: "string" }
+          - { label: "Selected work intro line", name: "selected_work_intro", widget: "string" }
+          - label: "Selected work teaser items"
+            name: "selected_work_items"
+            widget: "list"
+            fields:
+              - { label: "Meta line (organisation, dates)", name: "meta", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Body", name: "body", widget: "text" }
+
+      - name: "about"
+        label: "About page"
+        file: "content/pages/about.json"
+        fields:
+          - { label: "Show this page", name: "published", widget: "boolean", default: true, hint: "Turn off to remove this page and its nav link from the site." }
+          - { label: "Meta description (for search engines)", name: "meta_description", widget: "text" }
+          - { label: "Eyebrow (small text above the heading)", name: "hero_eyebrow", widget: "string" }
+          - { label: "Heading", name: "hero_heading", widget: "string" }
+          - { label: "Intro paragraph", name: "hero_lead", widget: "text" }
+          - { label: "Photo (optional)", name: "hero_image", widget: "image", required: false }
+          - { label: "Main body", name: "body", widget: "markdown", buttons: ["bold", "italic", "link", "heading-two", "quote", "bulleted-list", "numbered-list", "image"], modes: ["rich_text"] }
+          - { label: "Credentials heading", name: "credentials_heading", widget: "string" }
+          - { label: "Credentials text", name: "credentials_text", widget: "text" }
+
+      - name: "how-i-work"
+        label: "How I Work page"
+        file: "content/pages/how-i-work.json"
+        fields:
+          - { label: "Show this page", name: "published", widget: "boolean", default: true, hint: "Turn off to remove this page and its nav link from the site." }
+          - { label: "Meta description (for search engines)", name: "meta_description", widget: "text" }
+          - { label: "Eyebrow (small text above the heading)", name: "hero_eyebrow", widget: "string" }
+          - { label: "Heading", name: "hero_heading", widget: "string" }
+          - { label: "Intro paragraph", name: "hero_lead", widget: "text" }
+          - { label: "Photo (optional)", name: "hero_image", widget: "image", required: false }
+          - label: "Sections"
+            name: "sections"
+            widget: "list"
+            fields:
+              - { label: "Anchor id (used in links -- avoid changing once published)", name: "id", widget: "string" }
+              - { label: "Heading", name: "heading", widget: "string" }
+              - { label: "Body paragraph", name: "body", widget: "text" }
+              - { label: "Bullet points", name: "items", widget: "list" }
+          - { label: "Closing heading", name: "closing_heading", widget: "string" }
+          - { label: "Closing body", name: "closing_body", widget: "text" }
+          - { label: "Closing button label", name: "closing_cta_label", widget: "string" }
+
+      - name: "selected-work"
+        label: "Selected Work page"
+        file: "content/pages/selected-work.json"
+        fields:
+          - { label: "Show this page", name: "published", widget: "boolean", default: true, hint: "Turn off to remove this page and its nav link from the site." }
+          - { label: "Meta description (for search engines)", name: "meta_description", widget: "text" }
+          - { label: "Eyebrow (small text above the heading)", name: "hero_eyebrow", widget: "string" }
+          - { label: "Heading", name: "hero_heading", widget: "string" }
+          - { label: "Intro paragraph", name: "hero_lead", widget: "text" }
+          - { label: "Photo (optional)", name: "hero_image", widget: "image", required: false }
+          - label: "Work items"
+            name: "items"
+            widget: "list"
+            fields:
+              - { label: "Meta line (organisation, role, dates)", name: "meta", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Body", name: "body", widget: "text" }
+          - { label: "Closing line (can include a [link](contact.html))", name: "closing_text", widget: "string" }
+
+      - name: "contact"
+        label: "Contact page"
+        file: "content/pages/contact.json"
+        fields:
+          - { label: "Show this page", name: "published", widget: "boolean", default: true, hint: "Turn off to remove this page and its nav link from the site." }
+          - { label: "Meta description (for search engines)", name: "meta_description", widget: "text" }
+          - { label: "Eyebrow (small text above the heading)", name: "hero_eyebrow", widget: "string" }
+          - { label: "Heading", name: "hero_heading", widget: "string" }
+          - { label: "Intro paragraph", name: "hero_lead", widget: "text" }
+          - { label: "Photo (optional)", name: "hero_image", widget: "image", required: false }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "LinkedIn URL", name: "linkedin_url", widget: "string" }
+          - { label: "LinkedIn label (shown as link text)", name: "linkedin_label", widget: "string" }
+          - { label: "Location", name: "location", widget: "string" }
