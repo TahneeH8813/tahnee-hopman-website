@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1240 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+  <rect x="0" y="0" width="1240" height="400" rx="6" fill="#f3ede1"/>
+  <rect x="0.5" y="0.5" width="1239" height="399" rx="6" fill="none" stroke="#ddd2bf" stroke-width="1"/>
+
+  <text x="90" y="360" font-family="Georgia, 'Times New Roman', serif" font-size="320" fill="#a8442c" opacity="0.06">&#182;</text>
+
+  <!-- an open margin, held ready for a reply -->
+  <path d="M420 120 q-40 0 -40 40 v160 q0 40 40 40" fill="none" stroke="#211d19" stroke-width="3" stroke-linecap="round"/>
+  <path d="M820 120 q40 0 40 40 v160 q0 40 -40 40" fill="none" stroke="#211d19" stroke-width="3" stroke-linecap="round"/>
+
+  <path d="M600 234 l10 -16 l10 16" fill="none" stroke="#a8442c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="560" y1="266" x2="680" y2="266" stroke="#4a433c" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1 12" opacity="0.55"/>
+</svg>

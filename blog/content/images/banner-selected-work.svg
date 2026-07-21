@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1240 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+  <rect x="0" y="0" width="1240" height="400" rx="6" fill="#f3ede1"/>
+  <rect x="0.5" y="0.5" width="1239" height="399" rx="6" fill="none" stroke="#ddd2bf" stroke-width="1"/>
+
+  <text x="880" y="340" font-family="Georgia, 'Times New Roman', serif" font-size="320" fill="#a8442c" opacity="0.06">&#182;</text>
+
+  <!-- three waiting pages, stacked and mostly blank -->
+  <rect x="505" y="60" width="230" height="300" rx="3" fill="none" stroke="#ddd2bf" stroke-width="2" transform="rotate(-7 620 210)"/>
+  <rect x="505" y="60" width="230" height="300" rx="3" fill="none" stroke="#8a8177" stroke-width="2" transform="rotate(4 620 210)"/>
+
+  <g transform="rotate(-1 620 210)">
+    <path d="M505 60 H735 V360 H505 Z" fill="#faf6ef" stroke="#211d19" stroke-width="2.5"/>
+    <path d="M690 60 L735 60 L735 105 Z" fill="#e8ded0" stroke="#211d19" stroke-width="2"/>
+    <line x1="535" y1="150" x2="700" y2="150" stroke="#ddd2bf" stroke-width="2"/>
+    <line x1="535" y1="180" x2="680" y2="180" stroke="#ddd2bf" stroke-width="2"/>
+    <line x1="535" y1="210" x2="640" y2="210" stroke="#ddd2bf" stroke-width="2"/>
+  </g>
+</svg>

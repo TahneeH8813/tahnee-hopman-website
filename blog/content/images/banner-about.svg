@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1240 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+  <rect x="0" y="0" width="1240" height="400" rx="6" fill="#f3ede1"/>
+  <rect x="0.5" y="0.5" width="1239" height="399" rx="6" fill="none" stroke="#ddd2bf" stroke-width="1"/>
+
+  <text x="80" y="360" font-family="Georgia, 'Times New Roman', serif" font-size="340" fill="#a8442c" opacity="0.06">&#182;</text>
+
+  <!-- a quiet, wandering line: one career, two continents -->
+  <path d="M160 260 C 340 160, 500 340, 680 220 S 980 140, 1080 220" fill="none" stroke="#4a433c" stroke-width="2.5" stroke-linecap="round" opacity="0.55"/>
+
+  <circle cx="160" cy="260" r="6" fill="#a8442c"/>
+  <circle cx="1080" cy="220" r="6" fill="#211d19"/>
+
+  <!-- a marginal note along the way, half-corrected -->
+  <line x1="620" y1="300" x2="760" y2="300" stroke="#4a433c" stroke-width="2.5" stroke-linecap="round" opacity="0.5"/>
+  <line x1="620" y1="300" x2="700" y2="300" stroke="#a8442c" stroke-width="2.5"/>
+  <path d="M718 296 l7 -12 l7 12" fill="none" stroke="#a8442c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
